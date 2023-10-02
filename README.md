@@ -1,5 +1,5 @@
 # AGENCE LAB (System Overview) - 🇲🇿
-![Project Logo](https://github.com/nakatsinho/agenceLab/blob/main/agence-client/public/src/assets/logo.svg)
+![Project Logo](https://github.com/nakatsinho/agenceLab/blob/main/agence-client/src/assets/logo.svg)
 
 This system is a comprehensive management platform designed to streamline various organizational processes. It provides a centralized interface for handling tasks related to clients, consultants, and financial data. Users can efficiently manage client interactions, track consultant performance, and analyze financial metrics for informed decision-making. The system offers a user-friendly dashboard and reporting tools, facilitating a holistic view of operations and aiding in business growth and efficiency.
 
