@@ -77,6 +77,7 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th></th>
                                         <th>NID</th>
                                         <th>Nome Completo</th>
                                         <th>Nascimento</th>
@@ -90,7 +91,7 @@
                                         <td>
                                             <input type="checkbox" :id="'select_' + value.co_usuario"
                                                 v-model="selectedIds" :value="value.co_usuario" />
-                                            <label :for="'select_' + value.co_usuario">{{ index + 1 }}</label>
+                                            <label :for="'select_' + value.co_usuario"></label>
                                         </td>
                                         <td>{{ index + 1 }}</td>
                                         <td>{{ value.no_usuario }}</td>
