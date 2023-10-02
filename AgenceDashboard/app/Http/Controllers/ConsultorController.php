@@ -14,13 +14,13 @@ class ConsultorController extends Controller
 {
     public function index()
     {
-        $permissao = Permissao::with('user')
-            ->where('co_sistema', 1)
-            ->where('in_ativo', 'S')
-            ->whereIn('co_tipo_usuario', [0, 1, 2])
-            ->get();
+        // $permissao = Permissao::with('user')
+        //     ->where('co_sistema', 1)
+        //     ->where('in_ativo', 'S')
+        //     ->whereIn('co_tipo_usuario', [0, 1, 2])
+        //     ->get();
 
-        return $permissao;
+        // return $permissao;
         $consultores = User::join('PERMISSAO_SISTEMA', 'CAO_USUARIO.CO_USUARIO', '=', 'PERMISSAO_SISTEMA.CO_USUARIO')
             ->where('PERMISSAO_SISTEMA.CO_SISTEMA', 1)
             ->where('PERMISSAO_SISTEMA.IN_ATIVO', 'S')
