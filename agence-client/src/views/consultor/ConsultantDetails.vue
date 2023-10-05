@@ -43,7 +43,7 @@
                                             <tr v-for="(data, dataIndex) in userData" :key="dataIndex">
                                                 <td style="width:50px;">
                                                     <span class="round">
-                                                        <img src="../assets/images/users/8.jpg" alt="user" width="50">
+                                                        <img src="#" alt="user" width="50">
                                                     </span>
                                                 </td>
                                                 <td>
