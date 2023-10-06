@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://8a4f-197-235-205-54.ngrok-free.app'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
