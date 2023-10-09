@@ -38,7 +38,7 @@ class ConsultorController extends Controller
             ->join('CAO_OS as OS', 'FAT.co_os', '=', 'OS.co_os')
             ->join('CAO_USUARIO as CU', 'OS.co_usuario', '=', 'CU.co_usuario')
             ->where('CU.co_usuario', $consultor)
-            ->whereBetween(DB::raw('MONTH(FAT.data_emissao)'), [$startMonth, $endMonth])
+            ->whereBetween(DB::raw('CONCAT(YEAR(FAT.data_emissao), "-", MONTH(FAT.data_emissao))'), [$startMonth, $endMonth])
             ->select('CU.co_usuario', 'CU.no_usuario', 'FAT.data_emissao', DB::raw('SUM(FAT.valor - FAT.total_imp_inc) as receita_liquida'))
             ->groupBy('CU.co_usuario', 'CU.no_usuario', 'FAT.data_emissao')
             ->get();
@@ -61,7 +61,7 @@ class ConsultorController extends Controller
             ->join('CAO_OS as OS', 'FAT.co_os', '=', 'OS.co_os')
             ->join('CAO_USUARIO as CU', 'OS.co_usuario', '=', 'CU.co_usuario')
             ->where('CU.co_usuario', $consultor)
-            ->whereBetween(DB::raw('MONTH(FAT.data_emissao)'), [$startMonth, $endMonth])
+            ->whereBetween(DB::raw('CONCAT(YEAR(FAT.data_emissao), "-", MONTH(FAT.data_emissao))'), [$startMonth, $endMonth])
             ->select(DB::raw('SUM((FAT.valor - FAT.valor * FAT.total_imp_inc / 100) * FAT.comissao_cn / 100) as total'))
             ->first();
 
@@ -141,13 +141,4 @@ class ConsultorController extends Controller
         return $receitaLiquida;
     }
 
-    // public function calcularCustoFixoMedio()
-    // {
-    //     $totalFixedCost = Salario::sum('BRUT_SALARIO');
-    //     $numberOfConsultants = 3;
-
-    //     $averageFixedCost = $totalFixedCost / $numberOfConsultants;
-
-    //     return response()->json(['average_fixed_cost' => $averageFixedCost]);
-    // }
 }

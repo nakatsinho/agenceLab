@@ -24,8 +24,8 @@
                                     <div class="form-group row">
                                         <label for="start-date" class="col-md-2 col-form-label">Mês Inicio</label>
                                         <div class="col-md-10">
-                                            <input class="form-control" type="text" v-model="startDate" id="start-date"
-                                                @input="validateMonthInput('start')" />
+                                            <VueDatePicker :model-value="startDate" month-picker
+                                                @update:model-value="startDate => handleDateUpdate('start', startDate)" />
                                         </div>
                                     </div>
                                 </div>
@@ -33,8 +33,8 @@
                                     <div class="form-group row">
                                         <label for="end-date" class="col-md-2 col-form-label">Mês Fim</label>
                                         <div class="col-md-10">
-                                            <input class="form-control" type="text" v-model="endDate" id="end-date"
-                                                @input="validateMonthInput('end')" />
+                                            <VueDatePicker v-model="endDate" month-picker
+                                                @update:model-value="endDate => handleDateUpdate('end', endDate)" />
                                         </div>
                                     </div>
                                 </div>
@@ -101,22 +101,6 @@
                                         <td>{{ value.ds_endereco }}</td>
                                         <td>{{ value.nu_cnpj }}</td>
                                         <td>{{ value.nu_telefone }}</td>
-                                        <!-- <td>
-                                            <router-link :to="'/client/' + value.id" type="button"
-                                                class="btn btn-outline-success btn-rounded">
-                                                <i class="fa fa-table"></i>
-                                            </router-link>
-
-                                            <router-link :to="'/pie-chart-client/' + value.id" type="button"
-                                                class="btn btn-outline-warning btn-rounded">
-                                                <i class="fa fa-pie-chart"></i>
-                                            </router-link>
-
-                                            <router-link :to="'/bar-chart-client/' + value.id" type="button"
-                                                class="btn btn-outline-danger btn-rounded">
-                                                <i class="fa fa-bar-chart"></i>
-                                            </router-link>
-                                        </td> -->
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
@@ -144,8 +128,8 @@ export default {
             clients: [],
             selectAll: false,
             selectedIds: [],
-            startDate: '',
-            endDate: ''
+            startDate: null,
+            endDate: null
         }
     },
     mounted() {
@@ -167,16 +151,24 @@ export default {
             this.selectedIds = this.selectAll ? this.clients.map((_, index) => index + 1) : [];
         },
 
-        validateMonthInput(type) {
-            let input = type === 'start' ? this.startDate : this.endDate;
-            const parsedValue = parseInt(input);
-            if (isNaN(parsedValue) || parsedValue < 1 || parsedValue > 12) {
-                if (type === 'start') {
-                    this.startDate = '';
-                } else {
-                    this.endDate = '';
-                }
+        handleDateUpdate(type, date) {
+            const selectedDate = date;
+            const month = selectedDate.month + 1;
+            const year = selectedDate.year;
+
+            if (month < 1 || month > 12 || isNaN(month) || isNaN(year)) {
+                this.showSweetAlert('Erro de Inserção', 'Porfavor, Selecione uma data válida', 'error');
+                return;
             }
+
+            if (type === 'start') {
+                this.startDate = `${year}-${month.toString().padStart(2, '0')}`;
+            } else if (type === 'end') {
+                this.endDate = `${year}-${month.toString().padStart(2, '0')}`;
+            }
+
+            console.log('Start Date:', this.startDate);
+            console.log('End Date:', this.endDate);
         },
 
         viewSelected(param) {

@@ -24,8 +24,8 @@
                                     <div class="form-group row">
                                         <label for="start-date" class="col-md-2 col-form-label">Mês Inicio</label>
                                         <div class="col-md-10">
-                                            <input class="form-control" type="text" v-model="startDate" id="start-date"
-                                                @input="validateMonthInput('start')" />
+                                            <VueDatePicker :model-value="startDate" month-picker
+                                                @update:model-value="startDate => handleDateUpdate('start', startDate)" />
                                         </div>
                                     </div>
                                 </div>
@@ -33,8 +33,8 @@
                                     <div class="form-group row">
                                         <label for="end-date" class="col-md-2 col-form-label">Mês Fim</label>
                                         <div class="col-md-10">
-                                            <input class="form-control" type="text" v-model="endDate" id="end-date"
-                                                @input="validateMonthInput('end')" />
+                                            <VueDatePicker v-model="endDate" month-picker
+                                                @update:model-value="endDate => handleDateUpdate('end', endDate)" />
                                         </div>
                                     </div>
                                 </div>
@@ -89,8 +89,8 @@
                                 <tbody v-if="this.consultants.length > 0">
                                     <tr v-for="(value, index) in this.consultants" :key="index">
                                         <td>
-                                            <input type="checkbox" :id="'select_' + value.co_usuario"
-                                                v-model="selectedIds" :value="value.co_usuario" />
+                                            <input type="checkbox" :id="'select_' + value.co_usuario" v-model="selectedIds"
+                                                :value="value.co_usuario" />
                                             <label :for="'select_' + value.co_usuario"></label>
                                         </td>
                                         <td>{{ index + 1 }}</td>
@@ -126,8 +126,8 @@ export default {
             consultants: [],
             selectAll: false,
             selectedIds: [],
-            startDate: '',
-            endDate: ''
+            startDate: null,
+            endDate: null
         }
     },
     mounted() {
@@ -138,6 +138,7 @@ export default {
             http.get('consultores')
                 .then((response) => {
                     this.consultants = response.data;
+                    console.log('Date');
                     console.log('Consultants:', this.consultants);
                 })
                 .catch((error) => {
@@ -153,16 +154,27 @@ export default {
             console.log(this.selectedIds)
         },
 
-        validateMonthInput(type) {
-            let input = type === 'start' ? this.startDate : this.endDate;
-            const parsedValue = parseInt(input);
-            if (isNaN(parsedValue) || parsedValue < 1 || parsedValue > 12) {
-                if (type === 'start') {
-                    this.startDate = '';
-                } else {
-                    this.endDate = '';
-                }
+        handleDateUpdate(type, date) {
+
+            const selectedDate = date;
+            const month = selectedDate.month + 1;
+            const year = selectedDate.year;
+
+            if (month < 1 || month > 12 || isNaN(month) || isNaN(year)) {
+                this.showSweetAlert('Erro de Inserção', 'Porfavor, Selecione uma data válida', 'error');
+                return;
             }
+
+            if (type === 'start') {
+                this.startDate = `${year}-${month.toString().padStart(2, '0')}`;
+            } else if (type === 'end') {
+                this.endDate = `${year}-${month.toString().padStart(2, '0')}`;
+            }
+            // this.startMonthYear = new Date(year, month - 1);
+            // this.endMonthYear = new Date(year, month - 1);
+
+            console.log('Start Date:', this.startDate);
+            console.log('End Date:', this.endDate);
         },
 
         viewSelected(param) {

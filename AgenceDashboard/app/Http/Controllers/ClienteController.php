@@ -74,7 +74,7 @@ class ClienteController extends Controller
 
         $revenueData = Fatura::select('*', DB::raw('SUM(VALOR - TOTAL_IMP_INC) as net_revenue'), DB::raw('MONTH(data_emissao) as month'))
             ->whereIn('CO_CLIENTE', $selectedClients)
-            ->whereBetween(DB::raw('MONTH(data_emissao)'), [$startMonth, $endMonth])
+            ->whereBetween(DB::raw('CONCAT(YEAR(data_emissao), "-", MONTH(data_emissao))'), [$startMonth, $endMonth])
             ->groupBy('CO_CLIENTE', DB::raw('MONTH(data_emissao)'), 'co_fatura', 'co_sistema', 'co_os', 'num_nf', 'total', 'valor', 'data_emissao', 'corpo_nf', 'comissao_cn', 'total_imp_inc')
             ->get();
 
