@@ -24,8 +24,7 @@
                                     <div class="form-group row">
                                         <label for="start-date" class="col-md-2 col-form-label">Mês Inicio</label>
                                         <div class="col-md-10">
-                                            <VueDatePicker :model-value="startDate" month-picker
-                                                @update:model-value="startDate => handleDateUpdate('start', startDate)" />
+                                            <VueDatePicker v-model="inputStartDate" month-picker />
                                         </div>
                                     </div>
                                 </div>
@@ -33,8 +32,7 @@
                                     <div class="form-group row">
                                         <label for="end-date" class="col-md-2 col-form-label">Mês Fim</label>
                                         <div class="col-md-10">
-                                            <VueDatePicker v-model="endDate" month-picker
-                                                @update:model-value="endDate => handleDateUpdate('end', endDate)" />
+                                            <VueDatePicker v-model="inputEndDate" month-picker />
                                         </div>
                                     </div>
                                 </div>
@@ -128,12 +126,23 @@ export default {
             clients: [],
             selectAll: false,
             selectedIds: [],
+            inputStartDate: null,
+            inputEndDate: null,
             startDate: null,
             endDate: null
         }
     },
     mounted() {
         this.getClient();
+    },
+    watch:
+    {
+        inputStartDate(newstartDate) {
+            this.handleDateUpdate('start', newstartDate);
+        },
+        inputEndDate(newendDate) {
+            this.handleDateUpdate('end', newendDate);
+        }
     },
     methods: {
 
@@ -152,6 +161,7 @@ export default {
         },
 
         handleDateUpdate(type, date) {
+            
             const selectedDate = date;
             const month = selectedDate.month + 1;
             const year = selectedDate.year;

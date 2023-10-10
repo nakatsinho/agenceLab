@@ -24,8 +24,7 @@
                                     <div class="form-group row">
                                         <label for="start-date" class="col-md-2 col-form-label">Mês Inicio</label>
                                         <div class="col-md-10">
-                                            <VueDatePicker :model-value="startDate" month-picker
-                                                @update:model-value="startDate => handleDateUpdate('start', startDate)" />
+                                            <VueDatePicker v-model="inputStartDate" month-picker />
                                         </div>
                                     </div>
                                 </div>
@@ -33,8 +32,7 @@
                                     <div class="form-group row">
                                         <label for="end-date" class="col-md-2 col-form-label">Mês Fim</label>
                                         <div class="col-md-10">
-                                            <VueDatePicker v-model="endDate" month-picker
-                                                @update:model-value="endDate => handleDateUpdate('end', endDate)" />
+                                            <VueDatePicker v-model="inputEndDate" month-picker />
                                         </div>
                                     </div>
                                 </div>
@@ -126,6 +124,8 @@ export default {
             consultants: [],
             selectAll: false,
             selectedIds: [],
+            inputStartDate: null,
+            inputEndDate: null,
             startDate: null,
             endDate: null
         }
@@ -133,13 +133,21 @@ export default {
     mounted() {
         this.getConsultant();
     },
+    watch:
+    {
+        inputStartDate(newstartDate) {
+            this.handleDateUpdate('start', newstartDate);
+        },
+        inputEndDate(newendDate) {
+            this.handleDateUpdate('end', newendDate);
+        }
+    },
     methods: {
         getConsultant() {
             http.get('consultores')
                 .then((response) => {
                     this.consultants = response.data;
-                    console.log('Date');
-                    console.log('Consultants:', this.consultants);
+                    // console.log('Consultants:', this.consultants);
                 })
                 .catch((error) => {
                     console.error('Error fetching consultants:', error);
@@ -160,7 +168,7 @@ export default {
             const month = selectedDate.month + 1;
             const year = selectedDate.year;
 
-            if (month < 1 || month > 12 || isNaN(month) || isNaN(year)) {
+            if (isNaN(month) || isNaN(year)) {
                 this.showSweetAlert('Erro de Inserção', 'Porfavor, Selecione uma data válida', 'error');
                 return;
             }
@@ -170,8 +178,6 @@ export default {
             } else if (type === 'end') {
                 this.endDate = `${year}-${month.toString().padStart(2, '0')}`;
             }
-            // this.startMonthYear = new Date(year, month - 1);
-            // this.endMonthYear = new Date(year, month - 1);
 
             console.log('Start Date:', this.startDate);
             console.log('End Date:', this.endDate);
