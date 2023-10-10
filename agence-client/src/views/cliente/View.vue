@@ -70,7 +70,6 @@
                                         <th>Endereço</th>
                                         <th>CPNJ</th>
                                         <th>Telefone</th>
-                                        <!-- <th>Acções</th> -->
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -82,7 +81,6 @@
                                         <th>Endereço</th>
                                         <th>CPNJ</th>
                                         <th>Telefone</th>
-                                        <!-- <th>Acções</th> -->
                                     </tr>
                                 </tfoot>
                                 <tbody v-if="this.clients.length > 0">
